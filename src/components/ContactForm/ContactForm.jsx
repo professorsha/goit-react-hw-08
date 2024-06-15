@@ -1,75 +1,84 @@
-import { useId } from 'react';
-import { nanoid } from 'nanoid';
-import * as yup from 'yup';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import css from './ContactForm.module.css';
+import css from "./ContactForm.module.css";
+
+import { Field, Form, Formik, ErrorMessage } from "formik";
+import { useId } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
+import toast from "react-hot-toast";
+import { FeedbackSchema } from "../../validation";
+import { handleKeyPress } from "../../handleKeyPress";
 
+const ContactForm = () => {
+  const nameFieldId = useId();
+  const phoneFieldId = useId();
 
-const initialValues = {
-  name: '',
-  number: '',
-  id: '',
-};
-
-export default function ContactForm() {
-
-  
   const dispatch = useDispatch();
-
-  const FieldId = useId();
-  const contactSchema = yup.object().shape({
-    name: yup
-      .string()
-      .min(3, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required field'),
-    number: yup
-      .string()
-      .min(3, 'Too Short!')
-      .max(10, 'Too Long!')
-      .required('Required field'),
-  });
-
-  const handleSubmit = (values, actions) => {
-    const newContact = {
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    };
-    dispatch(addContact(newContact));
-    actions.resetForm();
-  
-  };
 
   return (
     <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={contactSchema}
+      initialValues={{ username: "", number: "" }}
+      validationSchema={FeedbackSchema}
+      onSubmit={(values, actions) => {
+        const newContact = {
+          name: values.username,
+          number: values.number,
+        };
+        dispatch(addContact(newContact))
+          .unwrap()
+          .then(() => {
+            toast.success("Successfully add!", { position: "top-center" });
+          })
+          .catch(() => {
+            toast.error("Error, input correct data", {
+              position: "top-center",
+            });
+          });
+        actions.resetForm();
+      }}
     >
-      <Form className={css.form}>
-        <label htmlFor={`${FieldId}-name`}>Name</label>
-        <Field
-          className={css.field}
-          type="text"
-          name="name"
-          id={`${FieldId}-name`}
-        />
-        <ErrorMessage className={css.error} name="name" component="span" />
-        <label htmlFor={`${FieldId}-number`}>Number</label>
-        <Field
-          className={css.field}
-          type="tel"
-          name="number"
-          id={`${FieldId}-number`}
-        />
-        <ErrorMessage className={css.error} name="number" component="span" />
-        <button className={css.btn} type="submit">
+      <Form className={css.formContainer}>
+        <label htmlFor={nameFieldId} className={css.label}>
+          Username
+        </label>
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            name="username"
+            id={nameFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="username"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
+
+        <label htmlFor={phoneFieldId} className={css.label}>
+          Phone
+        </label>
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            pattern="\d*"
+            onKeyPress={handleKeyPress}
+            name="number"
+            id={phoneFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="number"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
+
+        <button type="submit" className={css.submitButton}>
           Add contact
         </button>
       </Form>
     </Formik>
   );
-}
+};
+
+export default ContactForm;

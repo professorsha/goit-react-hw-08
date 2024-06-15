@@ -1,33 +1,38 @@
-import css from './ContactList.module.css';
-import Contact from '../Contact/Contact';
 import { useSelector } from "react-redux";
-import { filteredContacts } from "../../redux/contactsOps";
+import Contact from "../Contact/Contact";
+import css from "./ContactList.module.css";
+import { selectError, selectIsLoading } from "../../redux/contacts/selectors";
+import { selectFilteredContacts } from "../../redux/contacts/slice";
+import { InfinitySpin } from "react-loader-spinner";
 
-export default function ContactList() {
-  const contacts = useSelector(filteredContacts);
+const ContactList = () => {
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const contacts = useSelector(selectFilteredContacts);
+
   return (
-    <ul className={css.list}>
-      {contacts.map(contact => (
-        <li className={css.listItem} key={contact.id} >
-          <Contact contact={contact} />
-        </li>
-      ))}
+    <ul className={css.contactList}>
+      {isLoading && !error && (
+        <InfinitySpin
+          visible={true}
+          width="200"
+          color="#00f2ff"
+          ariaLabel="infinity-spin-loading"
+        />
+      )}
+      {contacts.map((contact) => {
+        return (
+          <li key={contact.id} className={css.contactItem}>
+            <Contact
+              name={contact.name}
+              number={contact.number}
+              id={contact.id}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
-}
+};
 
-
-  
-
- 
-      // {contacts.map((contact) => (
-      //   <li key={contact.id} className={css.contactItem}>
-      //     <Contact
-      //       name={contact.name}
-      //       number={contact.number}
-      //       id={contact.id}
-      //     />
-      //   </li>
-      // ))}
-    
- 
+export default ContactList;

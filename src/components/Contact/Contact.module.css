@@ -1,18 +1,60 @@
-.contactName{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 400;
-    height: 30px;
+.contact {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #4af850;
+  border-radius: 6px;
+  height: 80px;
 }
-svg{
-    width: 20px;
-    height: 20px;
+
+.contact:hover {
+  background-color: #7fcb28;
 }
-.btn{
-    border: 1px solid black;
-    border-radius: 4px;
-    height: 50%;
-    background-color: rgb(227, 227, 243);
+
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info {
+  color: #333;
+}
+
+.button {
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+}
+
+.infoIcon {
+  fill: #044630;
+  margin-right: 5px;
+  width: 18px;
+  height: 18px;
+}
+
+.bin {
+  width: 56px;
+  height: 36px;
+  background-color: #e3760a;
+  border-radius: 4px;
+}
+
+.pencil {
+  width: 36px;
+  height: 36px;
+  fill: #0080dc;
+}
+
+.pencil:hover {
+  fill: #005089;
+}
+
+.bin:hover {
+  fill: #a90006;
+}
+
+.data {
+  margin-right: auto;
 }
