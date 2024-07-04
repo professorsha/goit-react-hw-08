@@ -32,7 +32,11 @@ img {
   max-width: 100%;
   height: auto;
 }
-
+#root{
+  background: url('./background-phonebook.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
 .loader {
   display: flex;
   justify-content: center;

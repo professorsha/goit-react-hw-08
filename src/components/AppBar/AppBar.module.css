@@ -3,5 +3,10 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  border-bottom: 1px solid #2a363b;
+  /* begin glassmorphic nav */
+  background: #ffffff1a;
+  border-radius: 12px;
+  border: 1px solid #ffffff20;
+  backdrop-filter: blur(16px) saturate(120%);
+  /* end  glassmorphic nav*/
 }
